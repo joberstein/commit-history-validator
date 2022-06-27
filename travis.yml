@@ -1,0 +1,22 @@
+language: node_js
+node_js: lts/*
+cache: yarn
+
+env:
+  global:
+    # GITHUB_TOKEN
+    - secure: gFWPq4NyCltlv2PAibcYgWg/VJKiWsuhz/2GrXatNdosKMXu57qBnJ7gclwarzdrS4j6VIh+OA3WigiQKdsuEtT+FM3jPDOOarRfb6UkYG2bTpnJoiLdC1QldgD0nr/Z3+kby3c6KuZeSCAR/gB4Got2w87x6mwfcxGyZh10uelq8MWYMXlIDy34pwqt+qYxQ5US06l5cAYXQcR9cnghX1+yOIvQ0h/mbgvL4afq4jQK1KSwcZA4+CAoLwNtYIYW5T4mh4roIY/a5knXYpkfxWjYDagHdwFFUCbt/fVv3QKpuo6fT+pLjlQw7Hzqz/O+Li6qDbADqDvMmHxNfIzpxuYcVnNODFZ2hSZIXXmw/7NtVGmuGJ08eFsAxFwOUgY2QZlJ7zHONbEFw4Yv/odjzE9ltDVbZiB6seWvrP/XqqVEsHUQMHZqrRcBeQ4Ipnua2FNV10R50ZIbfYHRYOKb+VOHKcmEG6QoyOGGw5/zXG5RseTchIzZFtIUzR6Sya9ut9FgHuBDGGqGTy+yRoO4RJ/w1GyM+sUn2OUQb2FSq+V28krhN3VvxcO5nGXt3rRLaWTNXdbm8jCiiZinZv+4lvAvpAsiGUEdHVjQD4o/eQgDL1LVRDm/WY6zUE5BPPBU90QqwaoaGfI7z/0kmmAp6zcYnVFMnVSFQokBK+VrFcE=
+
+before_install:
+  - yarn cache clean
+
+script:
+  - yarn validate:commits -b $TRAVIS_BRANCH
+  - yarn validate:release -b $TRAVIS_BRANCH
+
+deploy:
+  - provider: script
+    edge: true
+    script: yarn release
+    on:
+      branch: master

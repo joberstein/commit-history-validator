@@ -21,8 +21,8 @@ const definitions = [
 
 const { branch, configFile } = commandLineArgs(definitions, { stopAtFirstUnknown: true });
 
-if (!branch || branch === "master") {
-    console.info(`Skipped commit validation on branch '${branch}'.`);
+if (!branch || branch === "master" || branch.startsWith("release")) {
+    console.info(`Skipped release validation on branch '${branch}'.`);
     process.exit(0);
 }
 

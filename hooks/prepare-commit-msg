@@ -26,7 +26,7 @@ const { name: hook } = parse(__filename);
 console.info(`Running '${hook}' hook...`);
 
 const branch = await getCurrentBranch();
-const issue = branch.trim().replace("issues/", "");
+const issue = branch.trim().replace(/(issues|release)\//, "");
 const isIssueNumeric = issue && /\d+/.test(issue);
 const issueTag = `Issue ${issue}.`;
 

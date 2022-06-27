@@ -1,0 +1,32 @@
+{
+  "name": "@joberstein12/commit-history-validator",
+  "version": "1.0.0",
+  "description": "Validates commits and release according to the conventional commit specification.",
+  "author": "Jesse Oberstein",
+  "license": "ISC",
+  "repository": "https://github.com/joberstein/commit-history-validator",
+  "main": "index.mjs",
+  "bin": "index.mjs",
+  "modules": "true",
+  "scripts": {
+    "release": "npx semantic-release",
+    "validate:commits": "node index.mjs validate commits",
+    "validate:release": "node index.mjs validate release"
+  },
+  "keywords": [
+    "conventional-commits",
+    "commit-history",
+    "semver",
+    "release"
+  ],
+  "dependencies": {
+    "command-line-args": "^5.2.1",
+    "zx": "^7.0.2"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/format": "^17.0.0",
+    "@commitlint/types": "^17.0.0",
+    "@types/node": "^18.0.0"
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "scopes": [
+        "ci",
+        "config",
+        "docs",
+        "dependencies",
+        "hooks",
+        "index",
+        "scripts",
+        "tests",
+        "utilities"
+    ],
+    "types": [
+        "chore",
+        "feat",
+        "fix",
+        "merge",
+        "refactor",
+        "revert",
+        "style"
+    ]
+}

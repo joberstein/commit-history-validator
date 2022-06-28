@@ -1,6 +1,6 @@
 import commandLineArgs from "command-line-args";
 import {getWorkingProjectDirectory} from "../utils/path.mjs";
-import {getCurrentBranch} from "../utils/git.mjs";
+import {getCurrentBranch, isRemoteBranch} from "../utils/git.mjs";
 import {getIsAlreadyDeployed, getNextReleaseVersion} from "../utils/release.mjs";
 
 const currentBranch = await getCurrentBranch();
@@ -20,8 +20,9 @@ const definitions = [
 ];
 
 const { branch, configFile } = commandLineArgs(definitions, { stopAtFirstUnknown: true });
+const isRemote = await isRemoteBranch(branch);
 
-if (!branch || branch === "master" || branch.startsWith("release")) {
+if (!branch || branch === "master" || branch.startsWith("release") || !isRemote) {
     console.info(`Skipped release validation on branch '${branch}'.`);
     process.exit(0);
 }

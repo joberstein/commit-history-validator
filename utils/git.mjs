@@ -27,3 +27,8 @@ export const hasChanges = async (branch, files) => {
     const {stdout} = await $`git diff master -- ${files}`;
     return !!stdout.trim();
 }
+
+export const isRemoteBranch = async (branch) => {
+    const {stdout} = await $`git ls-remote --heads origin ${branch}`;
+    return !!stdout.trim();
+}

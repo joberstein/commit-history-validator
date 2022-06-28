@@ -1,5 +1,5 @@
 import commandLineArgs from "command-line-args";
-import {fetchRemoteBranch, getCurrentBranch, getFirstMissingCommit} from "../utils/git.mjs";
+import {fetchRemoteBranch, getCurrentBranch, getFirstMissingCommit, isRemoteBranch} from "../utils/git.mjs";
 import {validateCommits} from "../utils/commit.mjs";
 import {getExecutingProjectDirectory} from "../utils/path.mjs";
 
@@ -14,8 +14,9 @@ const definitions = [
 ];
 
 const { branch } = commandLineArgs(definitions, { stopAtFirstUnknown: true });
+const isRemote = await isRemoteBranch(branch);
 
-if (!branch || branch === "master") {
+if (!branch || branch === "master" || !isRemote) {
     console.info(`Skipped commit validation on branch '${branch}'.`);
     process.exit(0);
 }

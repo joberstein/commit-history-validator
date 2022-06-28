@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import commandLineArgs from 'command-line-args';
 import {readdirSync} from "fs";
 import {node, zx} from "./utils/exec.mjs";

@@ -8,6 +8,9 @@
   "main": "index.mjs",
   "bin": "index.mjs",
   "modules": "true",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "release": "npx semantic-release",
     "validate:commits": "node index.mjs validate commits",

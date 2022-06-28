@@ -3,7 +3,10 @@ import {$} from "zx";
 
 export const getExecutingProjectDirectory = () => {
     const {pathname} = new URL(import.meta.url);
-    return dirname(parse(pathname).dir);
+    const parentLevels = 2;
+
+    return [...Array(parentLevels).keys()]
+        .reduce(path => dirname(path), parse(pathname).dir);
 }
 
 export const getWorkingProjectDirectory = async () => {

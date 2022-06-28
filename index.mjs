@@ -2,8 +2,8 @@
 
 import commandLineArgs from 'command-line-args';
 import {readdirSync} from "fs";
-import {node, zx} from "./utils/exec.mjs";
-import {getExecutingProjectDirectory} from "./utils/path.mjs";
+import {node, zx} from "./src/utils/exec.mjs";
+import {getExecutingProjectDirectory} from "./src/utils/path.mjs";
 
 const printUsage = () => {
     console.info([
@@ -36,12 +36,12 @@ switch (mainCommand.name) {
 
         switch (subCommand.name) {
             case "setup": {
-                await node(`${executingDir}/scripts/setupHooks.mjs`);
+                await node(`${executingDir}/src/scripts/setupHooks.mjs`);
                 break;
             }
             case "run": {
                 const { name: hook, options } = parseCommandWithOptions(subCommand.options);
-                const hooks = readdirSync(`${executingDir}/hooks`);
+                const hooks = readdirSync(`${executingDir}/src/hooks`);
 
                 if (!hooks.includes(hook)) {
                     console.error(
@@ -50,7 +50,7 @@ switch (mainCommand.name) {
                     );
                     process.exit(1);
                 }
-                await zx(`${executingDir}/hooks/${hook}`, options);
+                await zx(`${executingDir}/src/hooks/${hook}`, options);
                 break;
             }
             default: {
@@ -64,11 +64,11 @@ switch (mainCommand.name) {
 
         switch (name) {
             case "commits": {
-                await node(`${executingDir}/scripts/validateCommits.mjs`, options);
+                await node(`${executingDir}/src/scripts/validateCommits.mjs`, options);
                 break;
             }
             case "release": {
-                await node(`${executingDir}/scripts/validateRelease.mjs`, options);
+                await node(`${executingDir}/src/scripts/validateRelease.mjs`, options);
                 break;
             }
             default: {

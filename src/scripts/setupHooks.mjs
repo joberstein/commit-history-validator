@@ -12,7 +12,7 @@ const workingProjectData = readFileSync(`${workingDir}/package.json`, 'utf-8');
 const { name: workingAppName } = JSON.parse(workingProjectData);
 
 if (workingAppName === executingAppName) {
-    const hooksPath = `${executingDir}/hooks`;
+    const hooksPath = `${executingDir}/src/hooks`;
 
     await setHooksPath(hooksPath);
     console.info(`Set local hooks path to: ${hooksPath}`);
@@ -26,7 +26,7 @@ if (existingHooksPath) {
 }
 
 const hooksPath = existingHooksPath || `${workingDir}/.git/hooks`;
-const hooks = readdirSync(`${executingDir}/hooks`);
+const hooks = readdirSync(`${executingDir}/src/hooks`);
 console.info(`Found the following hooks to install: [${hooks.join(', ')}]`);
 
 hooks.forEach(hook => {

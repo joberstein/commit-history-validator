@@ -1,4 +1,4 @@
-import {fetchRemoteBranch, hasChanges} from "./utils/git.mjs";
+import {fetchRemoteBranch, hasChanges} from "./src/utils/git.mjs";
 
 const sourceCodePaths = [
   "hooks",

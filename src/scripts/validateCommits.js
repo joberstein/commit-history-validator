@@ -3,7 +3,7 @@ import {fetchRemoteBranch, getCurrentBranch, getFirstMissingCommit, isRemoteBran
 import {validateCommits} from "../utils/commit.js";
 import {getExecutingProjectDirectory} from "../utils/path.js";
 
-const currentBranch = await getCurrentBranch();
+const currentBranch = getCurrentBranch();
 
 const definitions = [
     {
@@ -14,7 +14,7 @@ const definitions = [
 ];
 
 const { branch } = commandLineArgs(definitions, { stopAtFirstUnknown: true });
-const isRemote = await isRemoteBranch(branch);
+const isRemote = isRemoteBranch(branch);
 
 if (!branch || branch === "master" || !isRemote) {
     console.info(`Skipped commit validation on branch '${branch}'.`);
@@ -22,9 +22,9 @@ if (!branch || branch === "master" || !isRemote) {
 }
 
 console.info("Fetching commits available on the master branch...");
-await fetchRemoteBranch("master");
+fetchRemoteBranch("master");
 
-const from = await getFirstMissingCommit("master", branch);
+const from = getFirstMissingCommit("master", branch);
 
 if (!from) {
     console.info('All commit messages on this branch have already been validated.');
@@ -36,7 +36,7 @@ const projectDir = getExecutingProjectDirectory();
 const config = `${projectDir}/commitlint.config.js`;
 
 try {
-    await validateCommits({ from, config });
+    validateCommits({ from, config });
 } catch (e) {
     process.exit(1);
 }

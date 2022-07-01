@@ -14,8 +14,8 @@ const sourceCodePaths = [
 
 export const isAlreadyDeployed = async () => {
     console.info("Fetching commits available on the master branch...");
-    await fetchRemoteBranch("master");
+    fetchRemoteBranch("master");
 
     console.info("Diffing against master...");
-    return await hasChanges("master", sourceCodePaths);
+    return hasChanges("master", sourceCodePaths);
 }

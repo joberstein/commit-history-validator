@@ -8,13 +8,13 @@ describe('src/utils/path', () => {
        expect(directory.endsWith(PROJECT_ROOT)).toBeTruthy();
     });
 
-    test('getWorkingProjectDirectory', async () => {
-        const directory = await pathUtils.getWorkingProjectDirectory();
+    test('getWorkingProjectDirectory', () => {
+        const directory = pathUtils.getWorkingProjectDirectory();
         expect(directory.endsWith(PROJECT_ROOT)).toBeTruthy();
     });
 
     test('getFileName', () => {
-        const fileName = pathUtils.getFileName();
-        expect(fileName).toEqual('path');
+        const fileName = pathUtils.getFileName('/something/file.js');
+        expect(fileName).toEqual('file');
     });
 });

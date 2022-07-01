@@ -1,6 +1,6 @@
 import {execSync} from "child_process";
 
-export const validateCommits = async ({ from, config }) => {
+export const validateCommits = ({ from, config }) => {
     const args = [];
 
     if (from) {
@@ -11,9 +11,9 @@ export const validateCommits = async ({ from, config }) => {
         args.push(...['-g', config]);
     }
 
-    await execSync(`npx commitlint -V ${args}`);
+    execSync(`npx commitlint -V ${args}`);
 }
 
-export const validateCurrentCommit = async (path) => {
-    await execSync(`npx commitlint --edit "${path}"`);
+export const validateCurrentCommit = (path) => {
+    execSync(`npx commitlint --edit "${path}"`);
 }

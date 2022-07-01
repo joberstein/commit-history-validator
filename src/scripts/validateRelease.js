@@ -28,7 +28,7 @@ if (!branch || branch === "master" || branch.startsWith("release") || !isRemote)
 }
 
 console.info(`Analyzing the commit history on branch '${branch}'...`);
-const nextVersion = await getNextReleaseVersion(branch);
+const nextVersion = getNextReleaseVersion(branch);
 const needsDeploy = await getIsAlreadyDeployed(branch, configFile);
 
 if (!needsDeploy && !!nextVersion) {

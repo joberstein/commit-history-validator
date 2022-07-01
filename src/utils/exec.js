@@ -1,8 +1,9 @@
+import {execSync} from "child_process";
 
-export const node = async (executable, options) => {
-    await $`node ${executable} ${options}`;
+export const node = (executable, options) => {
+    execSync(`node ${executable} ${options}`);
 }
 
-export const zx = async (executable, options) => {
-    await $`zx ${executable} ${options}`;
+export const zx = (executable, options) => {
+    execSync(`zx ${executable} ${options}`);
 }

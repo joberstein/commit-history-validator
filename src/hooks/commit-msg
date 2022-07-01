@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const run = require('../scripts/commit-msg');
+const run = require('../../dist/scripts/commit-msg').default;
 const messagePath = process.argv[2];
 
 run(messagePath);

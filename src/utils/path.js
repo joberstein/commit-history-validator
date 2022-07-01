@@ -1,8 +1,10 @@
 import {parse, dirname} from "path";
 import {execSync} from "child_process";
 
-export const getFileName = () => {
-    return parse(__filename).name;
+const encoding = 'utf-8';
+
+export const getFileName = (filename) => {
+    return parse(filename).name;
 }
 
 export const getExecutingProjectDirectory = () => {
@@ -12,7 +14,7 @@ export const getExecutingProjectDirectory = () => {
         .reduce(path => dirname(path), parse(__filename).dir);
 }
 
-export const getWorkingProjectDirectory = async () => {
-    const result = execSync(`git rev-parse --show-toplevel`, { encoding: 'utf-8' });
-    return result.trim();
+export const getWorkingProjectDirectory = () => {
+    const command = `git rev-parse --show-toplevel`;
+    return execSync(command, { encoding }).trim();
 }

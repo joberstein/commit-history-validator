@@ -1,37 +1,40 @@
+import {execSync} from "child_process";
 
-export const getCurrentBranch = async () => {
-    const {stdout} = await $`git branch --show-current`;
-    return stdout.trim();
+const encoding = 'utf-8';
+
+export const getCurrentBranch = () => {
+    const command = `git branch --show-current`;
+    return execSync(command, { encoding }).trim();
 }
 
-export const getHooksPath = async () => {
-    const {stdout} = await $`git config core.hooksPath`;
-    return stdout.trim();
+export const getHooksPath = () => {
+    const command = `git config core.hooksPath`;
+    return execSync(command, { encoding }).trim();
 }
 
-export const setHooksPath = async (path) => {
-    await $`git config core.hooksPath ${path}`;
+export const setHooksPath = (path) => {
+    execSync(`git config core.hooksPath ${path}`);
 }
 
-export const resetHooksPath = async () => {
-    await $`git config --unset core.hooksPath`;
+export const resetHooksPath = () => {
+    execSync(`git config --unset core.hooksPath`);
 }
 
-export const getFirstMissingCommit = async (branch1, branch2) => {
-    const {stdout} = await $`git rev-list ^${branch1} "${branch2}" | tail -n 1`;
-    return stdout.trim();
+export const getFirstMissingCommit = (branch1, branch2) => {
+    const command = `git rev-list ^${branch1} "${branch2}" | tail -n 1`;
+    return execSync(command, { encoding }).trim();
 }
 
-export const fetchRemoteBranch = async (branch) => {
-    await $`git fetch origin ${branch}:${branch}`;
+export const fetchRemoteBranch = (branch) => {
+    execSync(`git fetch origin ${branch}:${branch}`);
 }
 
-export const hasChanges = async (branch, files) => {
-    const {stdout} = await $`git diff master -- ${files}`;
-    return !!stdout.trim();
+export const hasChanges = (branch, files) => {
+    const command = `git diff master -- ${files}`;
+    return !!execSync(command, { encoding }).trim();
 }
 
-export const isRemoteBranch = async (branch) => {
-    const {stdout} = await $`git ls-remote --heads origin ${branch}`;
-    return !!stdout.trim();
+export const isRemoteBranch = (branch) => {
+    const command = `git ls-remote --heads origin ${branch}`;
+    return !!execSync(command, { encoding }).trim();
 }

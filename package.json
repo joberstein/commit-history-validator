@@ -5,17 +5,18 @@
   "author": "Jesse Oberstein",
   "license": "ISC",
   "repository": "https://github.com/joberstein/commit-history-validator",
-  "main": "index.mjs",
-  "bin": "index.mjs",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "build": "npx babel src --out-dir dist",
     "release": "npx semantic-release",
-    "hooks:setup": "node index.mjs hooks setup",
+    "hooks:setup": "node ./dist/index.js hooks setup",
     "test": "jest",
-    "validate:commits": "node index.mjs validate commits",
-    "validate:release": "node index.mjs validate release"
+    "validate:commits": "node src/index.mjs validate commits",
+    "validate:release": "node src/index.mjs validate release"
   },
   "keywords": [
     "conventional-commits",
@@ -28,6 +29,8 @@
     "zx": "^7.0.4"
   },
   "devDependencies": {
+    "@babel/cli": "^7.18.6",
+    "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
     "@commitlint/config-conventional": "^17.0.3",
     "@commitlint/format": "^17.0.0",

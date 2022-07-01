@@ -2,8 +2,8 @@
 
 import commandLineArgs from 'command-line-args';
 import {readdirSync} from "fs";
-import {node, zx} from "./src/utils/exec.mjs";
-import {getExecutingProjectDirectory} from "./src/utils/path.js";
+import {node, zx} from "./utils/exec.mjs";
+import {getExecutingProjectDirectory} from "./utils/path.js";
 
 const printUsage = () => {
     console.info([

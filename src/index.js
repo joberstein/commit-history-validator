@@ -2,7 +2,7 @@
 
 import commandLineArgs from 'command-line-args';
 import {readdirSync} from "fs";
-import {node, zx} from "./utils/exec.mjs";
+import {node, zx} from "./utils/exec.js";
 import {getExecutingProjectDirectory} from "./utils/path.js";
 
 const printUsage = () => {
@@ -36,7 +36,7 @@ switch (mainCommand.name) {
 
         switch (subCommand.name) {
             case "setup": {
-                await node(`${executingDir}/src/scripts/setupHooks.mjs`);
+                await node(`${executingDir}/dist/scripts/setupHooks.js`);
                 break;
             }
             case "run": {
@@ -64,11 +64,11 @@ switch (mainCommand.name) {
 
         switch (name) {
             case "commits": {
-                await node(`${executingDir}/src/scripts/validateCommits.mjs`, options);
+                await node(`${executingDir}/dist/scripts/validateCommits.js`, options);
                 break;
             }
             case "release": {
-                await node(`${executingDir}/src/scripts/validateRelease.mjs`, options);
+                await node(`${executingDir}/dist/scripts/validateRelease.js`, options);
                 break;
             }
             default: {

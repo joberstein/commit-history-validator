@@ -1,6 +1,6 @@
 import {writeFileSync, existsSync, appendFileSync, readFileSync, readdirSync} from "fs";
 import {getExecutingProjectDirectory, getWorkingProjectDirectory} from "../utils/path.js";
-import {getHooksPath, setHooksPath} from "../utils/git.mjs";
+import {getHooksPath, setHooksPath} from "../utils/git.js";
 
 const executingDir = getExecutingProjectDirectory();
 const workingDir = await getWorkingProjectDirectory();

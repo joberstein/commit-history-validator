@@ -1,5 +1,5 @@
 import commandLineArgs from "command-line-args";
-import {fetchRemoteBranch, getCurrentBranch, getFirstMissingCommit, isRemoteBranch} from "../utils/git.mjs";
+import {fetchRemoteBranch, getCurrentBranch, getFirstMissingCommit, isRemoteBranch} from "../utils/git.js";
 import {validateCommits} from "../utils/commit.js";
 import {getExecutingProjectDirectory} from "../utils/path.js";
 

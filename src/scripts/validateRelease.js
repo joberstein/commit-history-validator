@@ -1,7 +1,7 @@
 import commandLineArgs from "command-line-args";
 import {getWorkingProjectDirectory} from "../utils/path.js";
-import {getCurrentBranch, isRemoteBranch} from "../utils/git.mjs";
-import {getIsAlreadyDeployed, getNextReleaseVersion} from "../utils/release.mjs";
+import {getCurrentBranch, isRemoteBranch} from "../utils/git.js";
+import {getIsAlreadyDeployed, getNextReleaseVersion} from "../utils/release.js";
 
 const currentBranch = await getCurrentBranch();
 const workingDir = await getWorkingProjectDirectory();

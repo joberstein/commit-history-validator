@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import { parse } from "path";
-import {getCurrentBranch} from "../utils/git.mjs";
+import {getCurrentBranch} from "../utils/git.js";
 
 const messagePath = process.argv[3];
 

@@ -13,10 +13,10 @@
   "scripts": {
     "build": "npx babel src --out-dir dist",
     "release": "npx semantic-release",
-    "hooks:setup": "node ./dist/index.js hooks setup",
+    "hooks:setup": "node dist/index.js hooks setup",
     "test": "jest",
-    "validate:commits": "node src/index.mjs validate commits",
-    "validate:release": "node src/index.mjs validate release"
+    "validate:commits": "node dist/index.js validate commits",
+    "validate:release": "node dist/index.js validate release"
   },
   "keywords": [
     "conventional-commits",

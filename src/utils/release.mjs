@@ -1,4 +1,3 @@
-import {$} from "zx";
 import {existsSync} from "fs";
 
 export const getNextReleaseVersion = async (branch) => {

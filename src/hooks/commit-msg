@@ -1,11 +1,6 @@
-#!/usr/bin/env zx
+#!/usr/bin/env node
 
-import { parse } from "path";
-import {validateCurrentCommit} from "../utils/commit.mjs";
+const run = require('../scripts/commit-msg');
+const messagePath = process.argv[2];
 
-const messagePath = process.argv[3];
-
-const { name: hook } = parse(__filename);
-console.info(`Running '${hook}' hook...`);
-
-await validateCurrentCommit(messagePath);
+run(messagePath);

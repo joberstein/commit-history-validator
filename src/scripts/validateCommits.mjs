@@ -1,7 +1,7 @@
 import commandLineArgs from "command-line-args";
 import {fetchRemoteBranch, getCurrentBranch, getFirstMissingCommit, isRemoteBranch} from "../utils/git.mjs";
-import {validateCommits} from "../utils/commit.mjs";
-import {getExecutingProjectDirectory} from "../utils/path.mjs";
+import {validateCommits} from "../utils/commit.js";
+import {getExecutingProjectDirectory} from "../utils/path.js";
 
 const currentBranch = await getCurrentBranch();
 

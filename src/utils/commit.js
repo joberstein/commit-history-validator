@@ -1,4 +1,4 @@
-import {$} from "zx";
+import {execSync} from "child_process";
 
 export const validateCommits = async ({ from, config }) => {
     const args = [];
@@ -11,9 +11,9 @@ export const validateCommits = async ({ from, config }) => {
         args.push(...['-g', config]);
     }
 
-    await $`npx commitlint -V ${args}`;
+    await execSync(`npx commitlint -V ${args}`);
 }
 
 export const validateCurrentCommit = async (path) => {
-    await $`npx commitlint --edit "${path}"`;
+    await execSync(`npx commitlint --edit "${path}"`);
 }

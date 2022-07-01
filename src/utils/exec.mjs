@@ -1,4 +1,3 @@
-import {$} from "zx";
 
 export const node = async (executable, options) => {
     await $`node ${executable} ${options}`;

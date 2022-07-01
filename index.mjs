@@ -3,7 +3,7 @@
 import commandLineArgs from 'command-line-args';
 import {readdirSync} from "fs";
 import {node, zx} from "./src/utils/exec.mjs";
-import {getExecutingProjectDirectory} from "./src/utils/path.mjs";
+import {getExecutingProjectDirectory} from "./src/utils/path.js";
 
 const printUsage = () => {
     console.info([

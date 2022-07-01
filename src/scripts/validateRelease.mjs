@@ -1,5 +1,5 @@
 import commandLineArgs from "command-line-args";
-import {getWorkingProjectDirectory} from "../utils/path.mjs";
+import {getWorkingProjectDirectory} from "../utils/path.js";
 import {getCurrentBranch, isRemoteBranch} from "../utils/git.mjs";
 import {getIsAlreadyDeployed, getNextReleaseVersion} from "../utils/release.mjs";
 

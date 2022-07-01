@@ -1,4 +1,3 @@
-import {$} from "zx";
 
 export const getCurrentBranch = async () => {
     const {stdout} = await $`git branch --show-current`;
@@ -12,6 +11,10 @@ export const getHooksPath = async () => {
 
 export const setHooksPath = async (path) => {
     await $`git config core.hooksPath ${path}`;
+}
+
+export const resetHooksPath = async () => {
+    await $`git config --unset core.hooksPath`;
 }
 
 export const getFirstMissingCommit = async (branch1, branch2) => {

@@ -1,6 +1,3 @@
-#!/usr/bin/env node
+#!/usr/bin/env bash
 
-const run = require('../../dist/scripts/commit-msg').default;
-const messagePath = process.argv[2];
-
-run(messagePath);
+yarn hooks:run commit-msg $1

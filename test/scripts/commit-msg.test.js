@@ -8,8 +8,8 @@ describe('src/hooks/commit-msg', () => {
     const exit = jest.spyOn(process, 'exit')
         .mockReturnValue({});
 
-    it('Exits normally when the current commit message is valid', () => {
-        run([ 'filepath' ])
+    it("Does nothing for a branch that doesn't match the expected format", () => {
+        run([ 'filepath' ]);
 
         expect(validateCurrentCommit).toHaveBeenCalledWith('filepath');
         expect(exit).not.toHaveBeenCalled();

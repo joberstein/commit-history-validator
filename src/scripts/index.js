@@ -1,7 +1,9 @@
 import commandLineArgs from 'command-line-args';
-import {node} from "../utils/exec.js";
 import {getExecutingProjectDirectory} from "../utils/path.js";
+import {getCurrentBranch} from "../utils/git";
 import setupHooks from "./setupHooks";
+import validateCommits from "./validateCommits";
+import validateRelease from "./validateRelease";
 
 const printUsage = () => {
     console.info([
@@ -52,14 +54,24 @@ export default async () => {
         }
         case "validate": {
             const {name, options} = parseCommandWithOptions(mainCommand.options);
+            const {branch} = commandLineArgs([
+                {
+                    name: 'branch',
+                    alias: 'b',
+                    defaultValue: getCurrentBranch()
+                },
+            ], {
+                argv: options,
+                stopAtFirstUnknown: true
+            });
 
             switch (name) {
                 case "commits": {
-                    node(`${executingDir}/dist/scripts/validateCommits.js`, options);
+                    validateCommits(branch);
                     break;
                 }
                 case "release": {
-                    node(`${executingDir}/dist/scripts/validateRelease.js`, options);
+                    await validateRelease(branch);
                     break;
                 }
                 default: {

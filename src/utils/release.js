@@ -4,12 +4,13 @@ import {execSync} from "child_process";
 const encoding = 'utf-8';
 
 export const getNextReleaseVersion = (branch) => {
-    const command = [
-        `yarn release -d --branches=${branch}`,
-        `sed -n "s/.*The next release version is \\(.*\\)$/\\1/pi"`
-    ].join(' | ');
+    const command = `yarn release -d --branches=${branch}`;
+    const pattern = new RegExp('.*The next release version is (.*)$', 'i');
 
-    return execSync(command, { encoding }).trim();
+    return execSync(command, { encoding })
+        .trim()
+        .split('\n')
+        .find(line => line.match(pattern)?.at(0));
 }
 
 

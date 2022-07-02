@@ -13,9 +13,9 @@ export const validateCommits = ({ from, config }) => {
         args.push(...['-g', config]);
     }
 
-    execSync(`npx commitlint -V ${args.join(' ')}`, { stdio });
+    execSync(`commitlint -V ${args.join(' ')}`, { stdio });
 }
 
 export const validateCurrentCommit = (path) => {
-    execSync(`npx commitlint --edit "${path}"`, { stdio });
+    execSync(`commitlint --edit "${path}"`, { stdio });
 }

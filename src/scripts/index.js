@@ -1,6 +1,5 @@
 import commandLineArgs from 'command-line-args';
-import {readdirSync} from "fs";
-import {node, zx} from "../utils/exec.js";
+import {node} from "../utils/exec.js";
 import {getExecutingProjectDirectory} from "../utils/path.js";
 import setupHooks from "./setupHooks";
 
@@ -41,16 +40,8 @@ export default async () => {
                 }
                 case "run": {
                     const {name: hook, options} = parseCommandWithOptions(subCommand.options);
-                    const hooks = readdirSync(`${executingDir}/src/hooks`);
-
-                    if (!hooks.includes(hook)) {
-                        console.error(
-                            "The provided hook doesn't exist. " +
-                            `Only the following hooks are valid: [${hooks.join(", ")}]`
-                        );
-                        process.exit(1);
-                    }
-                    await zx(`${executingDir}/src/hooks/${hook}`, options);
+                    const hookExports = await import(`./${hook}`);
+                    hookExports.default(options);
                     break;
                 }
                 default: {

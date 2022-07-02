@@ -2,7 +2,7 @@ import {readFileSync, writeFileSync} from 'fs';
 import { parse } from "path";
 import {getCurrentBranch} from "../utils/git.js";
 
-export default (messagePath) => {
+export default ([ messagePath ]) => {
     const isCommentedLine = line => line.startsWith('#');
 
     const messageLines = readFileSync(messagePath, 'utf8')

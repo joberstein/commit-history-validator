@@ -26,8 +26,7 @@
     "release"
   ],
   "dependencies": {
-    "command-line-args": "^5.2.1",
-    "zx": "^7.0.4"
+    "command-line-args": "^5.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",

@@ -11,7 +11,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build": "yarn clean && babel src --out-dir dist",
+    "clean": "rm -rf dist",
     "release": "semantic-release",
     "hooks:setup": "node dist/index.js hooks setup",
     "hooks:run": "node dist/index.js hooks run",

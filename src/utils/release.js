@@ -9,7 +9,7 @@ export const getNextReleaseVersion = (branch) => {
         `sed -n "s/.*The next release version is \\(.*\\)$/\\1/pi"`
     ].join(' | ');
 
-    return execSync(command, { encoding });
+    return execSync(command, { encoding }).trim();
 }
 
 

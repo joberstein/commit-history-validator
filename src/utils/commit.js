@@ -1,5 +1,7 @@
 import {execSync} from "child_process";
 
+const stdio = 'inherit';
+
 export const validateCommits = ({ from, config }) => {
     const args = [];
 
@@ -11,9 +13,9 @@ export const validateCommits = ({ from, config }) => {
         args.push(...['-g', config]);
     }
 
-    execSync(`npx commitlint -V ${args}`);
+    execSync(`npx commitlint -V ${args.join(' ')}`, { stdio });
 }
 
 export const validateCurrentCommit = (path) => {
-    execSync(`npx commitlint --edit "${path}"`);
+    execSync(`npx commitlint --edit "${path}"`, { stdio });
 }

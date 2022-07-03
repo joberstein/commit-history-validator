@@ -11,7 +11,7 @@ jest.mock('fs', () => ({
 }));
 
 const getNewMessage = (issue) => {
-    mockCommitMsgLines.splice(-1, 0, `\nIssue ${issue}.\n`);
+    mockCommitMsgLines = [...mockCommitMsgLines, `\nIssue ${issue}.`];
     return mockCommitMsgLines.join('\n');
 }
 
@@ -20,7 +20,7 @@ describe('src/hooks/prepare-commit-msg', () => {
         .mockReturnValue('');
 
     beforeEach(() => {
-       mockCommitMsgLines = ['Subject Line', '# Comment Line'];
+        mockCommitMsgLines = ['Subject Line'];
     });
 
     ['', 'issues', 'issues/a'].forEach(branch => {
@@ -41,9 +41,10 @@ describe('src/hooks/prepare-commit-msg', () => {
         it('Includes the issue number for a release branch', () => {
             getCurrentBranch.mockReturnValue('release/5');
             run([ filepath ]);
+            const newMessage = getNewMessage(5);
 
             expect(fs.readFileSync).toHaveBeenCalled();
-            expect(fs.writeFileSync).toHaveBeenCalledWith(filepath, getNewMessage(5));
+            expect(fs.writeFileSync).toHaveBeenCalledWith(filepath, newMessage);
         });
 
         it('Includes the issue number when only a subject line is present', () => {
@@ -55,8 +56,8 @@ describe('src/hooks/prepare-commit-msg', () => {
 
         it('Includes the issue number when only a subject line is present', () => {
             const extraLine = '\nExtra line';
-            const [subjectLine, commentLine] = mockCommitMsgLines;
-            mockCommitMsgLines = [subjectLine, extraLine, commentLine];
+            const [subjectLine] = mockCommitMsgLines;
+            mockCommitMsgLines = [subjectLine, extraLine];
 
             run([ filepath ]);
 
@@ -66,13 +67,25 @@ describe('src/hooks/prepare-commit-msg', () => {
 
         it('Does nothing when the issue number is already present', () => {
             const issueLine = '\nIssue 4.';
-            const [subjectLine, commentLine] = mockCommitMsgLines;
-            mockCommitMsgLines = [subjectLine, issueLine, commentLine];
+            const [subjectLine] = mockCommitMsgLines;
+            mockCommitMsgLines = [subjectLine, issueLine];
 
             run([ filepath ]);
 
             expect(fs.readFileSync).toHaveBeenCalled();
             expect(fs.writeFileSync).not.toHaveBeenCalled();
+        });
+
+        it('Removes all lines after comments in the commit message', () => {
+            const extraLines = ['\n# Comment line', '\nExtra line'];
+            const [subjectLine] = mockCommitMsgLines;
+            mockCommitMsgLines = [subjectLine, ...extraLines];
+
+            run([ filepath ]);
+            mockCommitMsgLines.splice(1, 2);
+
+            expect(fs.readFileSync).toHaveBeenCalled();
+            expect(fs.writeFileSync).toHaveBeenCalledWith(filepath, getNewMessage(4));
         });
     });
 });

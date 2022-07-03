@@ -1,7 +1,7 @@
 import run from "src/scripts/commit-msg";
 import * as commitUtils from "src/utils/commit.js";
 
-describe('src/hooks/commit-msg', () => {
+describe('scripts/commit-msg', () => {
     const validateCurrentCommit = jest.spyOn(commitUtils, 'validateCurrentCommit')
         .mockResolvedValue({});
 

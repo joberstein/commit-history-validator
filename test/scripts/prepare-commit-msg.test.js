@@ -15,7 +15,7 @@ const getNewMessage = (issue) => {
     return mockCommitMsgLines.join('\n');
 }
 
-describe('src/hooks/prepare-commit-msg', () => {
+describe('scripts/prepare-commit-msg', () => {
     const getCurrentBranch = jest.spyOn(gitUtils, 'getCurrentBranch')
         .mockReturnValue('');
 

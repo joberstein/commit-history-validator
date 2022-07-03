@@ -8,8 +8,12 @@ export const getCurrentBranch = () => {
 }
 
 export const getHooksPath = () => {
-    const command = `git config core.hooksPath`;
-    return execSync(command, { encoding }).trim();
+    try {
+        const command = `git config core.hooksPath`;
+        return execSync(command, {encoding}).trim();
+    } catch (e) {
+        return '';
+    }
 }
 
 export const setHooksPath = (path) => {
@@ -30,8 +34,13 @@ export const fetchRemoteBranch = (branch) => {
 }
 
 export const hasChanges = (branch, files) => {
-    const command = `git diff master -- ${files}`;
-    return !!execSync(command, { encoding }).trim();
+    const command = `git diff --quiet master -- ${files.join(' ')}`;
+    try {
+        execSync(command, {encoding});
+        return false;
+    } catch (e) {
+        return true;
+    }
 }
 
 export const isRemoteBranch = (branch) => {

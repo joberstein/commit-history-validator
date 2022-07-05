@@ -2,7 +2,7 @@ import {execSync} from "child_process";
 
 const stdio = 'inherit';
 
-export const validateCommits = ({ from, config }) => {
+export const validateCommits = ({ from, config }, { cwd, stdio } = { stdio }) => {
     const args = [];
 
     if (from) {
@@ -13,9 +13,9 @@ export const validateCommits = ({ from, config }) => {
         args.push(...['-g', config]);
     }
 
-    execSync(`commitlint -V ${args.join(' ')}`, { stdio });
+    execSync(`commitlint -V ${args.join(' ')}`, { cwd, stdio });
 }
 
-export const validateCurrentCommit = (path) => {
-    execSync(`commitlint --edit "${path}"`, { stdio });
+export const validateCurrentCommit = (path, { cwd, stdio } = { stdio }) => {
+    execSync(`commitlint --edit "${path}"`, { cwd, stdio });
 }

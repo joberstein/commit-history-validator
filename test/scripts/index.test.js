@@ -4,7 +4,7 @@ import * as prepareCommitMsgScript from "src/scripts/prepare-commit-msg";
 import * as commitMsgScript from "src/scripts/commit-msg";
 import * as validateCommitsScript from "src/scripts/validateCommits";
 import * as validateReleaseScript from "src/scripts/validateRelease";
-import run from 'src/scripts/index';
+import {run} from 'src/scripts/index';
 
 describe('scripts/index', () => {
     const setupHooks = jest.spyOn(setupHooksScript, 'default');

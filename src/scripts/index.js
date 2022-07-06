@@ -4,6 +4,14 @@ import setupHooks from "./setupHooks";
 import validateCommits from "./validateCommits";
 import validateRelease from "./validateRelease";
 
+const usage = () => [
+    "Usage:",
+    " - [cmd] hooks setup",
+    " - [cmd] hooks run [hook]",
+    " - [cmd] validate commits [-b | --branch]",
+    " - [cmd] validate release [-b | --branch]",
+].join("\n");
+
 const parseCommandWithOptions = (argv) => {
     const definitions = [
         { name: 'name', defaultOption: true },
@@ -15,7 +23,7 @@ const parseCommandWithOptions = (argv) => {
     return { name, options };
 }
 
-export default async () => {
+export const run = async () => {
     const mainCommand = parseCommandWithOptions();
 
     switch (mainCommand.name) {
@@ -34,7 +42,7 @@ export default async () => {
                     break;
                 }
                 default: {
-                    throw new Error("Subcommand does not exist for main command 'hooks'.");
+                    throw new Error(`Subcommand does not exist for main command 'hooks'.\n${usage()}`);
                 }
             }
             break;
@@ -62,13 +70,22 @@ export default async () => {
                     break;
                 }
                 default: {
-                    throw new Error("Subcommand does not exist for main command 'validate'.");
+                    throw new Error(`Subcommand does not exist for main command 'validate'.\n${usage()}`);
                 }
             }
             break;
         }
         default: {
-            throw new Error("Command does not exist.");
+            throw new Error(`Command does not exist.\n${usage()}`);
         }
+    }
+}
+
+export default async () => {
+    try {
+        await run();
+    } catch ({ message }) {
+        console.error(message);
+        process.exit(1);
     }
 }

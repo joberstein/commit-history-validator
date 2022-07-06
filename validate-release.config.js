@@ -10,7 +10,7 @@ const sourceCodePaths = [
 ];
 
 module.exports = {
-    isAlreadyDeployed: async () => {
+    isDeployRequired: async () => {
         console.info("Fetching commits available on the master branch...");
         fetchRemoteBranch("master");
 

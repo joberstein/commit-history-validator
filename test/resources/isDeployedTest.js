@@ -1,2 +1,2 @@
 
-export const isAlreadyDeployed = branch => branch !== "deploy";
+export const isDeployRequired = branch => branch !== "deploy";

@@ -16,14 +16,14 @@ export const getNextReleaseVersion = (branch) => {
     return nextVersion;
 }
 
-export const getIsAlreadyDeployed = async (branch, configFile) => {
+export const isDeployRequired = async (branch, configFile) => {
     const configExists = existsSync(configFile);
 
     if (!configExists) {
         console.warn("The provided config file does not exist. Every commit will indicate a new release.");
-        return false;
+        return true;
     }
 
     const config = await import(configFile);
-    return config.isAlreadyDeployed(branch);
+    return config.isDeployRequired(branch);
 }

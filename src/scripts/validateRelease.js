@@ -1,29 +1,27 @@
 import {getWorkingProjectDirectory} from "../utils/path.js";
 import {isRemoteBranch} from "../utils/git.js";
-import {getIsAlreadyDeployed, getNextReleaseVersion} from "../utils/release.js";
+import {isDeployRequired, getNextReleaseVersion} from "../utils/release.js";
 
 export default async (branch) => {
     const isRemote = isRemoteBranch(branch);
 
     if (!branch || branch === "master" || branch.startsWith("release") || !isRemote) {
         console.info(`Skipped release validation on branch '${branch}'.`);
-        process.exit(0);
+        return;
     }
 
     console.info(`Analyzing the commit history on branch '${branch}'...`);
     const nextVersion = getNextReleaseVersion(branch);
     const workingDir = getWorkingProjectDirectory();
     const configFile = `${workingDir}/validate-release.config.js`;
-    const needsDeploy = await getIsAlreadyDeployed(branch, configFile);
+    const needsDeploy = await isDeployRequired(branch, configFile);
 
     if (!needsDeploy && !!nextVersion) {
-        console.error("There are no source code changes to deploy, but the commit history indicates a new release.");
-        process.exit(1);
+        throw new Error("There are no source code changes to deploy, but the commit history indicates a new release.");
     }
 
     if (needsDeploy && !nextVersion) {
-        console.error("There are source code changes to deploy, but the commit history does not indicate a new release.");
-        process.exit(1);
+        throw new Error("There are source code changes to deploy, but the commit history does not indicate a new release.");s
     }
 
     if (!!nextVersion) {

@@ -1,4 +1,4 @@
-import {getNextReleaseVersion, getIsAlreadyDeployed} from "src/utils/release";
+import {getNextReleaseVersion, isDeployRequired} from "src/utils/release";
 import {resolve} from "path";
 import childProcess from "child_process";
 import {describe} from "@jest/globals";
@@ -28,22 +28,22 @@ describe('utils/release', () => {
        });
    });
 
-   describe('getIsAlreadyDeployed', () => {
+   describe('isDeployRequired', () => {
        const configFile = resolve('./test/resources/isDeployedTest.js');
 
-       it("Expects to deploy if the config file doesn't exist", async () => {
-           const isAlreadyDeployed = await getIsAlreadyDeployed('master', 'fakeFile');
-           expect(isAlreadyDeployed).toBeFalsy();
+       it("Returns true if the config file doesn't exist", async () => {
+           const result = await isDeployRequired('master', 'fakeFile');
+           expect(result).toBeTruthy();
        });
 
-       it("Expects to deploy if the config file implementation returns false", async () => {
-           const isAlreadyDeployed = await getIsAlreadyDeployed('deploy', configFile);
-           expect(isAlreadyDeployed).toBeFalsy();
+       it("Returns false if the config file implementation returns false", async () => {
+           const result = await isDeployRequired('deploy', configFile);
+           expect(result).toBeFalsy();
        });
 
-       it("Expects not to deploy if the config file implementation returns true", async () => {
-           const isAlreadyDeployed = await getIsAlreadyDeployed('master', configFile);
-           expect(isAlreadyDeployed).toBeTruthy();
+       it("Returns true if the config file implementation returns true", async () => {
+           const result = await isDeployRequired('master', configFile);
+           expect(result).toBeTruthy();
        });
    });
 });

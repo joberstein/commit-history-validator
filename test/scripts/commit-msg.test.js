@@ -17,16 +17,13 @@ describe('scripts/commit-msg', () => {
 
     it('Errors out when the current commit message is not valid', () => {
         validateCurrentCommit.mockImplementation(() => { throw new Error('Failed'); });
-        run([ 'filepath' ]);
-        
+
+        expect(() => run([ 'filepath' ])).toThrow();
         expect(validateCurrentCommit).toHaveBeenCalledWith('filepath');
-        expect(exit).toHaveBeenCalledWith(1);
     });
 
     it('Errors out when no commit message path is passed', () => {
-        run([]);
-
+        expect(() => run([])).toThrow();
         expect(validateCurrentCommit).not.toHaveBeenCalled();
-        expect(exit).not.toHaveBeenCalled();
     });
 });

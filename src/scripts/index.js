@@ -1,20 +1,8 @@
 import commandLineArgs from 'command-line-args';
-import {getExecutingProjectDirectory} from "../utils/path.js";
 import {getCurrentBranch} from "../utils/git";
 import setupHooks from "./setupHooks";
 import validateCommits from "./validateCommits";
 import validateRelease from "./validateRelease";
-
-const printUsage = () => {
-    console.info([
-        "Command not found.",
-        "Usage:",
-        " - [cmd] hooks setup",
-        " - [cmd] hooks run [hook]",
-        " - [cmd] validate commits [-b | --branch]",
-        " - [cmd] validate release [-b | --branch]",
-    ].join("\n"));
-}
 
 const parseCommandWithOptions = (argv) => {
     const definitions = [
@@ -29,7 +17,6 @@ const parseCommandWithOptions = (argv) => {
 
 export default async () => {
     const mainCommand = parseCommandWithOptions();
-    const executingDir = getExecutingProjectDirectory();
 
     switch (mainCommand.name) {
         case "hooks": {
@@ -47,7 +34,7 @@ export default async () => {
                     break;
                 }
                 default: {
-                    printUsage();
+                    throw new Error("Subcommand does not exist for main command 'hooks'.");
                 }
             }
             break;
@@ -75,13 +62,13 @@ export default async () => {
                     break;
                 }
                 default: {
-                    printUsage();
+                    throw new Error("Subcommand does not exist for main command 'validate'.");
                 }
             }
             break;
         }
         default: {
-            printUsage();
+            throw new Error("Command does not exist.");
         }
     }
 }

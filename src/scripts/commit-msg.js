@@ -3,16 +3,11 @@ import { getFileName } from "../utils/path.js";
 
 export default ([ messagePath ]) => {
     if (!messagePath) {
-        console.error("Path to the last commit message is required.");
-        return;
+        throw new Error("Path to the last commit message is required.");
     }
 
     const hook = getFileName(__filename);
     console.info(`Running '${hook}' hook...`);
 
-    try {
-        return validateCurrentCommit(messagePath);
-    } catch (e) {
-        process.exit(1);
-    }
+    return validateCurrentCommit(messagePath);
 }

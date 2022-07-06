@@ -12,6 +12,7 @@ env:
 
 before_install:
   - yarn cache clean
+  - git config --global init.defaultBranch master
 
 script:
   - yarn build

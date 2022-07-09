@@ -1,4 +1,4 @@
-import * as gitUtils from "../..//src/utils/git.js";
+import * as gitUtils from "../../src/utils/git.js";
 import * as commitUtils from "../../src/utils/commit.js";
 import run from '../../src/scripts/validateCommits';
 

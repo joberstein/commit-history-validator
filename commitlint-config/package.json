@@ -1,0 +1,17 @@
+{
+  "name": "@joberstein12/commitlint-config",
+  "version": "1.0.0",
+  "description": "Shared commitlint config suited to my personal preferences.",
+  "author": "Jesse Oberstein",
+  "license": "ISC",
+  "repository": "https://github.com/joberstein/commit-history-validator",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "conventional-commits",
+    "commitlint",
+    "shareable",
+    "config"
+  ]
+}

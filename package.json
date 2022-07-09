@@ -1,11 +1,13 @@
 {
   "private": true,
   "workspaces": [
-    "commit-history-validator"
+    "commit-history-validator",
+    "commitlint-config"
   ],
   "scripts": {
     "start": "node ./commit-history-validator/dist/index.js",
     "hooks:setup": "yarn start hooks setup",
-    "hooks:run": "yarn start hooks run"
+    "hooks:run": "yarn start hooks run",
+    "validate:commits": "yarn start validate commits"
   }
 }

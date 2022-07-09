@@ -14,6 +14,7 @@ export default () => {
     if (getWorkspaceNames().includes(executingAppName)) {
         setHooksPath(hookImplementationPath);
         console.info(`Set local hooks path to: ${hookImplementationPath}`);
+        execSync(`chmod -R +x ${hookImplementationPath}`);
         return;
     }
 

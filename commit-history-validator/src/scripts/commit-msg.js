@@ -1,5 +1,5 @@
 import { validateCurrentCommit } from "../utils/commit.js";
-import {getExecutingProjectDirectory, getFileName} from "../utils/path.js";
+import { getFileName } from "../utils/path.js";
 
 export default ([ messagePath ]) => {
     if (!messagePath) {
@@ -9,8 +9,5 @@ export default ([ messagePath ]) => {
     const hook = getFileName(__filename);
     console.info(`Running '${hook}' hook...`);
 
-    const projectDir = getExecutingProjectDirectory();
-    const config = `${projectDir}/dist/config/commitlint.config.js`;
-
-    return validateCurrentCommit({ messagePath, config });
+    return validateCurrentCommit({ messagePath });
 }

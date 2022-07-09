@@ -2,20 +2,20 @@ import {execSync} from "child_process";
 
 const defaultOptions = { stdio: 'inherit' };
 
-export const validateCommits = ({ from, config }, { cwd, stdio } = defaultOptions) => {
-    const args = [];
+const buildCommand = ({ from, config, messagePath, verbose }) => [
+    'commitlint',
+    ...(from ? ['--from', `${from}^`] : []),
+    ...(config ? ['-g', `'${config}'`] : []),
+    ...(verbose ? ['-V'] : []),
+    ...(messagePath ? ['--edit', `'${messagePath}'`] : []),
+].join(' ');
 
-    if (from) {
-        args.push(...['---from', `${from}^`]);
-    }
-
-    if (config) {
-        args.push(...['-g', config]);
-    }
-
-    execSync(`commitlint -V ${args.join(' ')}`, { cwd, stdio });
+export const validateCommits = (options, execOptions = defaultOptions) => {
+    const command = buildCommand({ ...options, verbose: true });
+    execSync(command, execOptions);
 }
 
-export const validateCurrentCommit = (path, { cwd, stdio } = defaultOptions) => {
-    execSync(`commitlint --edit "${path}"`, { cwd, stdio });
+export const validateCurrentCommit = (options, execOptions = defaultOptions) => {
+    const command = buildCommand(options);
+    execSync(command, execOptions);
 }

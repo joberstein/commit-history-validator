@@ -7,8 +7,8 @@ import {
 } from "../../src/utils/git";
 import childProcess from "child_process";
 
-const cwd = 'testGitRepo';
-const testRemote = 'testRemoteGitRepo';
+const cwd = 'testGitUtilsLocal';
+const testRemote = 'testGitUtilsRemote';
 const localBranch = 'localBranch';
 
 const execProjectSync = commands => childProcess.execSync(commands.join(' && '));
@@ -36,6 +36,10 @@ describe('utils/git', () => {
             `git pull -q origin master`,
             `git checkout -qb ${localBranch}`,
         ]);
+    });
+
+    afterEach(() => {
+        execProjectSync([`rm -rf ${cwd} ${testRemote}`]);
     });
 
     it('Gets, sets, and resets the hooks path', () => {
@@ -139,10 +143,6 @@ describe('utils/git', () => {
             const result = hasChanges('master', ['file.txt'], {cwd});
             expect(result).toBeTruthy();
         });
-    });
-
-    afterEach(() => {
-        execProjectSync([`rm -rf ${cwd} ${testRemote}`]);
     });
 })
 ;

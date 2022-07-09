@@ -21,7 +21,7 @@ export default (branch) => {
     console.info(`Validating commit messages on branch '${branch}'...\n`);
 
     const projectDir = getExecutingProjectDirectory();
-    const config = `${projectDir}/commitlint.config.js`;
+    const config = `${projectDir}/dist/config/commitlint.config.js`;
 
     validateCommits({from, config});
 

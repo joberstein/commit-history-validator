@@ -1,19 +1,22 @@
+import {resolve} from "path";
 import childProcess from "child_process";
 import {validateCommits, validateCurrentCommit} from "../../src/utils/commit";
 import {getFirstMissingCommit} from "../../src/utils/git";
 
-const cwd = 'testGitRepo2';
+const cwd = 'testCommitUtils';
 const stdio = 'ignore';
+const messagePath = '.git/COMMIT_EDITMSG';
+const config = resolve(`./dist/config/commitlint.config.js`);
 
 const execProjectSync = commands => childProcess.execSync(commands.join(' && '));
 const execLocalGitSync = commands => childProcess.execSync(commands.join(' && '), {cwd});
 
-describe('utils/git', () => {
+describe('utils/commit', () => {
     beforeEach(() => {
         execProjectSync([
             `rm -rf ${cwd}`,
             `mkdir ${cwd}`,
-            `cp commitlint-enums.json commitlint.config.js ${cwd}`,
+            `cp commitlint-enums.json ${cwd}`,
         ]);
 
         execLocalGitSync([
@@ -21,7 +24,13 @@ describe('utils/git', () => {
             'touch file.txt',
             "echo 'additional text' > file.txt",
             "git add file.txt",
+            'touch commitlint.config.js',
+            'echo "module.exports = {};" > commitlint.config.js',
         ]);
+    });
+
+    afterEach(() => {
+        execProjectSync([`rm -rf ${cwd}`]);
     });
 
     describe('validateCurrentCommit', () => {
@@ -31,7 +40,7 @@ describe('utils/git', () => {
             ]);
 
             expect(() => {
-                validateCurrentCommit(`.git/COMMIT_EDITMSG`, { cwd, stdio });
+                validateCurrentCommit({ messagePath, config }, { cwd, stdio });
             }).toThrow();
         });
 
@@ -41,7 +50,7 @@ describe('utils/git', () => {
             ]);
 
             expect(() => {
-                validateCurrentCommit(`.git/COMMIT_EDITMSG`, { cwd, stdio });
+                validateCurrentCommit({ messagePath, config }, { cwd, stdio });
             }).not.toThrow();
         });
     });
@@ -62,7 +71,7 @@ describe('utils/git', () => {
             const from = getFirstMissingCommit('master', 'other', { cwd });
 
             expect(() => {
-                validateCommits({ from, config: './commitlint.config.js' }, { cwd, stdio });
+                validateCommits({ from, config }, { cwd, stdio });
             }).toThrow();
         });
 
@@ -81,12 +90,8 @@ describe('utils/git', () => {
             const from = getFirstMissingCommit('master', 'other', { cwd});
 
             expect(() => {
-                validateCommits({ from, config: './commitlint.config.js' }, { cwd, stdio });
+                validateCommits({ from, config }, { cwd, stdio });
             }).not.toThrow();
         });
-    });
-
-    afterEach(() => {
-        execProjectSync([`rm -rf ${cwd}`]);
     });
 });

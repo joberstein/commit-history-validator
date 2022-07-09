@@ -13,7 +13,7 @@ export default async (branch) => {
     console.info(`Analyzing the commit history on branch '${branch}'...`);
     const nextVersion = getNextReleaseVersion(branch);
     const workingDir = getWorkingProjectDirectory();
-    const configFile = `${workingDir}/validate-release.config.js`;
+    const configFile = `${workingDir}/dist/config/validate-release.config.js`;
     const needsDeploy = await isDeployRequired(branch, configFile);
 
     if (!needsDeploy && !!nextVersion) {

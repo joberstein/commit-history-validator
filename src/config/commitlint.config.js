@@ -1,9 +1,11 @@
-const {readFileSync} = require("fs");
+import {readFileSync, existsSync} from "fs";
+import {getExecutingProjectDirectory, getWorkingProjectDirectory} from "../utils/path";
 
-const customEnumData = readFileSync(`${process.cwd()}/commitlint-enums.json`, 'utf-8');
+const customPath = `${getWorkingProjectDirectory()}/commitlint-enums.json`;
+const customEnumData = existsSync(customPath) ? readFileSync(customPath, 'utf-8') : '{}';
 const customEnums = JSON.parse(customEnumData);
 
-const defaultEnumData = readFileSync(`${__dirname}/commitlint-enums.json`, 'utf-8');
+const defaultEnumData = readFileSync(`${getExecutingProjectDirectory()}/commitlint-enums.json`, 'utf-8');
 const defaultEnums = JSON.parse(defaultEnumData);
 
 const getEnum = (name) => {

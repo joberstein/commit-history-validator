@@ -12,8 +12,11 @@ env:
 
 before_install:
   - yarn cache clean
+  - git config --global init.defaultBranch master
 
 script:
+  - yarn build
+  - yarn test
   - yarn validate:commits -b $TRAVIS_BRANCH
   - yarn validate:release -b $TRAVIS_BRANCH
 

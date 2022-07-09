@@ -1,6 +1,6 @@
-import * as gitUtils from "src/utils/git.js";
-import * as releaseUtils from "src/utils/release.js";
-import run from 'src/scripts/validateRelease';
+import * as gitUtils from "../../src/utils/git.js";
+import * as releaseUtils from "../../src/utils/release.js";
+import run from '../../src/scripts/validateRelease';
 
 const branch = 'test';
 

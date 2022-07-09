@@ -1,6 +1,6 @@
 import fs from 'fs';
-import * as gitUtils from "src/utils/git.js";
-import run from "src/scripts/prepare-commit-msg";
+import * as gitUtils from "../../src/utils/git.js";
+import run from "../../src/scripts/prepare-commit-msg";
 
 const filepath = 'filepath';
 let mockCommitMsgLines = [];

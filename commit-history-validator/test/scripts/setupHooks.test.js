@@ -1,7 +1,7 @@
-import run from 'src/scripts/setupHooks';
+import run from '../../src/scripts/setupHooks';
 import fs from "fs";
-import * as gitUtils from 'src/utils/git';
-import * as pathUtils from 'src/utils/path';
+import * as gitUtils from '../../src/utils/git';
+import * as pathUtils from '../../src/utils/path';
 import childProcess from "child_process";
 
 let prepareCommitMsgHookContents = '';
@@ -15,6 +15,9 @@ describe('scripts/setupHooks', () => {
         .mockImplementation();
 
     const getWorkingProjectDirectory = jest.spyOn(pathUtils, 'getWorkingProjectDirectory');
+
+    const getWorkspaceNames = jest.spyOn(pathUtils, 'getWorkspaceNames')
+        .mockReturnValue(['@joberstein12/commit-history-validator']);
 
     const existsSync = jest.spyOn(fs, 'existsSync')
         .mockReturnValue(false);
@@ -30,14 +33,14 @@ describe('scripts/setupHooks', () => {
     const execSync = jest.spyOn(childProcess, 'execSync');
 
     beforeEach(() => {
-        prepareCommitMsgHookContents = `\nnpx commit-history-validator hooks run prepare-commit-msg $@`;
-        commitMsgHookContents = `\nnpx commit-history-validator hooks run commit-msg $@`;
+        prepareCommitMsgHookContents = `\nnpx @joberstein12/commit-history-validator hooks run prepare-commit-msg $@`;
+        commitMsgHookContents = `\nnpx @joberstein12/commit-history-validator hooks run commit-msg $@`;
     });
 
     it('Sets the hooks path for this project', () => {
         run();
 
-        expect(setHooksPath).toHaveBeenCalledWith(expect.stringMatching(/commit-history-validator\/src\/hooks$/));
+        expect(setHooksPath).toHaveBeenCalledWith(expect.stringMatching(/commit-history-validator\/hooks$/));
         expect(getHooksPath).not.toHaveBeenCalled();
     });
 
@@ -45,10 +48,11 @@ describe('scripts/setupHooks', () => {
        beforeEach(() => {
            getWorkingProjectDirectory.mockReturnValue('other');
            execSync.mockImplementation();
+           getWorkspaceNames.mockReturnValue([]);
 
            readFileSync.mockImplementation(filepath => {
                if (filepath.endsWith('commit-history-validator/package.json')) {
-                   return JSON.stringify({ name: 'commit-history-validator' });
+                   return JSON.stringify({ name: '@joberstein12/commit-history-validator' });
                } else if (filepath.endsWith('other/package.json')) {
                    return JSON.stringify({ name: 'other' });
                } else if (filepath.endsWith('.git/hooks/prepare-commit-msg')) {
@@ -68,7 +72,7 @@ describe('scripts/setupHooks', () => {
 
             ['commit-msg', 'prepare-commit-msg'].forEach(hook => {
                 const hookPath = `other/.git/hooks/${hook}`;
-                const hookContents = `npx commit-history-validator hooks run ${hook} $@`;
+                const hookContents = `npx @joberstein12/commit-history-validator hooks run ${hook} $@`;
 
                 expect(execSync).toHaveBeenCalledWith(`chmod +x ${hookPath}`);
                 expect(writeFileSync).toHaveBeenCalledWith(hookPath, hookContents);
@@ -92,7 +96,7 @@ describe('scripts/setupHooks', () => {
 
                 ['commit-msg', 'prepare-commit-msg'].forEach(hook => {
                     const hookPath = `other/.git/hooks/${hook}`;
-                    const hookContents = `\nnpx commit-history-validator hooks run ${hook} $@`;
+                    const hookContents = `\nnpx @joberstein12/commit-history-validator hooks run ${hook} $@`;
 
                     expect(appendFileSync).toHaveBeenCalledWith(hookPath, hookContents);
                 });

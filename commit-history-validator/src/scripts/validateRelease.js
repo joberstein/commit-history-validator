@@ -1,8 +1,8 @@
-import {getWorkingProjectDirectory} from "../utils/path.js";
 import {isRemoteBranch} from "../utils/git.js";
 import {isDeployRequired, getNextReleaseVersion} from "../utils/release.js";
+import {resolve} from "path";
 
-export default async (branch) => {
+export default async (branch, configPath = ".") => {
     const isRemote = isRemoteBranch(branch);
 
     if (!branch || branch === "master" || branch.startsWith("release") || !isRemote) {
@@ -12,8 +12,7 @@ export default async (branch) => {
 
     console.info(`Analyzing the commit history on branch '${branch}'...`);
     const nextVersion = getNextReleaseVersion(branch);
-    const workingDir = getWorkingProjectDirectory();
-    const configFile = `${workingDir}/dist/config/validate-release.config.js`;
+    const configFile = `${resolve(configPath)}/validate-release.config.js`;
     const needsDeploy = await isDeployRequired(branch, configFile);
 
     if (!needsDeploy && !!nextVersion) {

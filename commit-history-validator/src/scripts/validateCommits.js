@@ -1,6 +1,5 @@
 import {fetchRemoteBranch, getFirstMissingCommit, isRemoteBranch} from "../utils/git.js";
 import {validateCommits} from "../utils/commit.js";
-import {getExecutingProjectDirectory} from "../utils/path.js";
 
 export default (branch) => {
     if (!branch || branch === "master" || !isRemoteBranch(branch)) {
@@ -20,10 +19,7 @@ export default (branch) => {
 
     console.info(`Validating commit messages on branch '${branch}'...\n`);
 
-    const projectDir = getExecutingProjectDirectory();
-    const config = `${projectDir}/dist/config/commitlint.config.js`;
-
-    validateCommits({from, config});
+    validateCommits({from});
 
     console.info('All commit messages successfully validated.');
 }

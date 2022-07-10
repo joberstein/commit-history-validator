@@ -1,4 +1,4 @@
-import {getNextReleaseVersion, isDeployRequired} from "src/utils/release";
+import {getNextReleaseVersion, isDeployRequired} from "../../src/utils/release";
 import {resolve} from "path";
 import childProcess from "child_process";
 import {describe} from "@jest/globals";

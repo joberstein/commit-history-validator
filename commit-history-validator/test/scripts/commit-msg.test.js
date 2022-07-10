@@ -1,10 +1,8 @@
-import {resolve} from "path";
-import run from "src/scripts/commit-msg";
-import * as commitUtils from "src/utils/commit.js";
+import run from "../../src/scripts/commit-msg";
+import * as commitUtils from "../../src/utils/commit.js";
 
 const commitlintArgs = {
     messagePath: 'filepath',
-    config: resolve('dist/config/commitlint.config.js')
 };
 
 describe('scripts/commit-msg', () => {

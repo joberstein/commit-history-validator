@@ -1,0 +1,10 @@
+{
+  "extends": ["@joberstein12"],
+  "rules": {
+    "scope-enum": [2, "always", [
+      "commit-history-validator",
+      "commitlint-config",
+      "hooks"
+    ]]
+  }
+}

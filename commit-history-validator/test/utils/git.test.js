@@ -144,5 +144,4 @@ describe('utils/git', () => {
             expect(result).toBeTruthy();
         });
     });
-})
-;
+});

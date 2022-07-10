@@ -11,7 +11,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "yarn clean && babel src --out-dir dist",
+    "build": "yarn clean && chmod +x src/index.js && babel src --out-dir dist",
     "clean": "rm -rf dist",
     "validate:release": "node ./dist/index.js validate release -c ./dist/config"
   },

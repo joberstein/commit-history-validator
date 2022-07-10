@@ -2,17 +2,15 @@ import * as pathUtils from "../../src/utils/path.js";
 import {expect} from "@jest/globals";
 import {execSync} from "child_process";
 
-const PROJECT_ROOT = 'commit-history-validator';
-
 describe('src/utils/path', () => {
     test('getExecutingProjectDirectory', () => {
        const directory = pathUtils.getExecutingProjectDirectory();
-       expect(directory.endsWith(PROJECT_ROOT)).toBeTruthy();
+       expect(directory.endsWith('commit-history-validator')).toBeTruthy();
     });
 
     test('getWorkingProjectDirectory', () => {
         const directory = pathUtils.getWorkingProjectDirectory();
-        expect(directory.endsWith(PROJECT_ROOT)).toBeTruthy();
+        expect(directory.endsWith("release-utils")).toBeTruthy();
     });
 
     test('getFileName', () => {

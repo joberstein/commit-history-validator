@@ -13,7 +13,16 @@ env:
 before_install:
   - yarn cache clean
   - git config --global init.defaultBranch master
+
+install:
+  - yarn --frozen-lockfile
+
+  # The build script requires babel, so install dependencies first
   - yarn build
+
+  # Remove the node_modules folder and re-install newly-built artifacts
+  - rm -rf commitlint-config/node_modules
+  - yarn --frozen-lockfile
 
 script:
   - yarn test --ci

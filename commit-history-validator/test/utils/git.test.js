@@ -26,7 +26,9 @@ describe('utils/git', () => {
         execRemoteGitSync([
             'git init',
             'touch file.txt',
-            'git add file.txt',
+            "mkdir subfolder",
+            "touch subfolder/subfile.txt",
+            'git add file.txt subfolder',
             "git commit -m 'test'",
         ]);
 
@@ -117,7 +119,11 @@ describe('utils/git', () => {
 
     describe('hasChanges', () => {
         it("Returns false when the given file does not have changes compared to another branch", () => {
-            const result = hasChanges('master', ['file.txt'], {cwd});
+            const result = hasChanges({
+                branch: 'master',
+                files: ['file.txt'],
+            }, {cwd});
+
             expect(result).toBeFalsy();
         });
 
@@ -129,19 +135,80 @@ describe('utils/git', () => {
                 "git commit -m 'test 2'"
             ]);
 
-            const result = hasChanges('master', ['file.txt'], {cwd});
+            const result = hasChanges({
+                branch: 'master',
+                files: ['file.txt'],
+            }, {cwd});
+
             expect(result).toBeFalsy();
         });
 
-        it("Returns true when the given file has changes compared to another branch", () => {
-            execLocalGitSync([
-                "echo 'additional text' >> file.txt",
-                "git add file.txt",
-                "git commit -m 'test 2'"
-            ]);
+        describe("A top-level file has changed", () => {
+            beforeEach(() => {
+                execLocalGitSync([
+                    "echo 'additional text' >> file.txt",
+                    "git add file.txt",
+                    "git commit -m 'test 2'"
+                ]);
+            });
 
-            const result = hasChanges('master', ['file.txt'], {cwd});
-            expect(result).toBeTruthy();
+            it("Returns true when the given file has changes compared to another branch", () => {
+                const result = hasChanges({
+                    branch: 'master',
+                    files: ['file.txt'],
+                }, {cwd});
+
+                expect(result).toBeTruthy();
+            });
+
+            it("Returns false only when something outside the relative directory changes", () => {
+                const result = hasChanges({
+                    branch: 'master',
+                    files: ['file.txt'],
+                    relative: "./subfolder"
+                }, {cwd});
+
+                expect(result).toBeFalsy();
+            });
+        });
+
+        describe('A file inside a subfolder has changed', () => {
+            beforeEach(() => {
+                execLocalGitSync([
+                    "echo 'additional text' >> subfolder/subfile.txt",
+                    "git add file.txt subfolder",
+                    "git commit -m 'test 2'"
+                ]);
+            });
+
+            it("Returns false when nothing inside the relative directory matches", () => {
+                const result = hasChanges({
+                    branch: 'master',
+                    files: ['!:subfile.txt'],
+                    relative: "./subfolder"
+                }, {cwd});
+
+                expect(result).toBeFalsy();
+            });
+
+            it("Returns true when something inside the relative directory matches", () => {
+                const result = hasChanges({
+                    branch: 'master',
+                    files: ['*/subfile.txt'],
+                    relative: "subfolder"
+                }, {cwd});
+
+                expect(result).toBeTruthy();
+            });
+
+            it("Returns true when anything inside the relative directory changes", () => {
+                const result = hasChanges({
+                    branch: 'master',
+                    relative: "subfolder"
+                }, {cwd});
+
+                expect(result).toBeTruthy();
+            });
         });
     });
 });

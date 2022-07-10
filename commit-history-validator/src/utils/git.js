@@ -33,8 +33,15 @@ export const fetchRemoteBranch = (branch, { cwd } = {}) => {
     execSync(`git fetch origin ${branch}:${branch}` , { cwd, stdio: 'ignore' });
 }
 
-export const hasChanges = (branch, files, { cwd } = {}) => {
-    const command = `git diff --quiet ${branch} -- ${files.join(' ')}`;
+export const hasChanges = ({ branch, files = [], relative }, { cwd } = {}) => {
+    const args = [
+        "--quiet",
+        branch,
+        ...(relative ? [`--relative=${relative}`] : [])
+    ];
+
+    const command = `git diff ${args.join(' ')} -- ${files.join(' ')}`;
+
     try {
         execSync(command, { encoding, cwd });
         return false;

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "echo 'Nothing to build' && exit 0",
-    "validate:release": "commit-history-validator validate release"
+    "validate:release": "commit-history-validator validate release -c ."
   },
   "keywords": [
     "conventional-commits",

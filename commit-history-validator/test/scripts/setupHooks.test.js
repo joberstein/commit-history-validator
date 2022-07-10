@@ -40,7 +40,7 @@ describe('scripts/setupHooks', () => {
     it('Sets the hooks path for this project', () => {
         run();
 
-        expect(setHooksPath).toHaveBeenCalledWith(expect.stringMatching(/commit-history-validator\/hooks$/));
+        expect(setHooksPath).toHaveBeenCalledWith(expect.stringMatching(/release-utils\/hooks$/));
         expect(getHooksPath).not.toHaveBeenCalled();
     });
 

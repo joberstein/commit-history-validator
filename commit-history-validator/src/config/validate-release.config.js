@@ -5,5 +5,9 @@ export const isDeployRequired = async () => {
     fetchRemoteBranch("master");
 
     console.info("Diffing against master...");
-    return hasChanges("master", [ "src" ]);
+    return hasChanges({
+        branch: "master",
+        relative: 'commit-history-validator',
+        files: ["src", "package.json"]
+    });
 };

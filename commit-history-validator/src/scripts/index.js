@@ -3,6 +3,7 @@ import {getCurrentBranch} from "../utils/git";
 import setupHooks from "./setupHooks";
 import validateCommits from "./validateCommits";
 import validateRelease from "./validateRelease";
+import {getWorkingProjectDirectory} from "../utils/path";
 
 const usage = () => [
     "Usage:",
@@ -49,11 +50,16 @@ export const run = async () => {
         }
         case "validate": {
             const {name, options} = parseCommandWithOptions(mainCommand.options);
-            const {branch} = commandLineArgs([
+            const {branch, config} = commandLineArgs([
                 {
                     name: 'branch',
                     alias: 'b',
                     defaultValue: getCurrentBranch()
+                },
+                {
+                    name: 'config',
+                    alias: 'c',
+                    defaultValue: getWorkingProjectDirectory(),
                 },
             ], {
                 argv: options,
@@ -66,7 +72,7 @@ export const run = async () => {
                     break;
                 }
                 case "release": {
-                    await validateRelease(branch);
+                    await validateRelease(branch, config);
                     break;
                 }
                 default: {

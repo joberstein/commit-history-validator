@@ -5,9 +5,12 @@
     "commitlint-config"
   ],
   "scripts": {
-    "start": "node ./commit-history-validator/dist/index.js",
-    "hooks:setup": "yarn start hooks setup",
-    "hooks:run": "yarn start hooks run",
-    "validate:commits": "yarn start validate commits"
+    "build": "yarn workspaces run build",
+    "hooks:setup": "commit-history-validator hooks setup",
+    "hooks:run": "commit-history-validator hooks run",
+    "release": "yarn workspaces run semantic-release",
+    "test": "yarn workspaces run jest --passWithNoTests",
+    "validate:commits": "commit-history-validator validate commits",
+    "validate:release": "yarn workspaces run validate:release"
   }
 }

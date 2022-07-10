@@ -8,10 +8,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "build": "echo 'Nothing to build' && exit 0",
+    "validate:release": "commit-history-validator validate release"
+  },
   "keywords": [
     "conventional-commits",
     "commitlint",
     "shareable",
     "config"
-  ]
+  ],
+  "devDependencies": {
+    "@joberstein12/commit-history-validator": "1.0.0"
+  }
 }

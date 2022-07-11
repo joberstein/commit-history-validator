@@ -8,9 +8,8 @@ const encoding = 'utf-8';
 
 export default () => {
     const executingDir = `${getExecutingProjectDirectory()}`;
-
     const executingProjectData = readFileSync(`${executingDir}/package.json`, { encoding });
-    const {name: executingAppName} = JSON.parse(executingProjectData);
+    const {name: executingAppName, version} = JSON.parse(executingProjectData);
 
     if (getWorkspaceNames().includes(executingAppName)) {
         const hookImplementationPath = resolve(`${executingDir}/../hooks`);
@@ -35,28 +34,33 @@ export default () => {
 
     hooks.forEach(hook => {
         const outputFile = [hooksPath, hook].join("/");
-        const contents = `npx ${executingAppName} hooks run ${hook} $@`;
+        const contents = `npx ${executingAppName}@${version} hooks run ${hook} $@`;
 
         if (!existsSync(outputFile)) {
             console.info(`Writing the command to run the '${hook}' hook...`);
-            writeFileSync(outputFile, contents);
-
-            console.info(`Setting permissions for the '${hook}' hook...\n`);
-            execSync(`chmod +x ${outputFile}`);
-
+            writeFileSync(outputFile, contents, { mode: 0o755 });
             return;
         }
+
+        const commandMatcher = new RegExp(contents
+            .replace(`@${version}`, '.*')
+            .replaceAll("$", "\\$")
+        );
 
         console.warn(`Hook already exists at file: '${outputFile}'`);
-        const existingHook = readFileSync(outputFile, { encoding });
-        const commandMatcher = new RegExp(contents.replace("$", "\\$"));
+        const existingHookLines = readFileSync(outputFile, { encoding })
+            .split('\n');
 
-        if (commandMatcher.test(existingHook)) {
-            console.info(`Skipped updating the '${hook}' hook; it already contains the expected command.\n`);
+        const commandLineIdx = existingHookLines.findIndex(line => commandMatcher.test(line));
+
+        if (commandLineIdx < 0) {
+            console.info(`Appending the command to run the '${hook}' hook...\n`);
+            appendFileSync(outputFile, '\n' + contents);
             return;
         }
 
-        console.info(`Appending the command to run the '${hook}' hook...\n`);
-        appendFileSync(outputFile, '\n' + contents);
+        existingHookLines.splice(commandLineIdx, 1, contents);
+        console.info(`Updating the '${hook}' hook to version ${version}.\n`);
+        writeFileSync(outputFile, existingHookLines.join('\n'));
     });
 }

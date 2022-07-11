@@ -1,9 +1,11 @@
-import run from '../../src/scripts/setupHooks';
 import fs from "fs";
+import childProcess from "child_process";
 import * as gitUtils from '../../src/utils/git';
 import * as pathUtils from '../../src/utils/path';
-import childProcess from "child_process";
+import run from '../../src/scripts/setupHooks';
 
+const name = '@joberstein12/commit-history-validator';
+let version;
 let prepareCommitMsgHookContents = '';
 let commitMsgHookContents = '';
 
@@ -17,7 +19,7 @@ describe('scripts/setupHooks', () => {
     const getWorkingProjectDirectory = jest.spyOn(pathUtils, 'getWorkingProjectDirectory');
 
     const getWorkspaceNames = jest.spyOn(pathUtils, 'getWorkspaceNames')
-        .mockReturnValue(['@joberstein12/commit-history-validator']);
+        .mockReturnValue([name]);
 
     const existsSync = jest.spyOn(fs, 'existsSync')
         .mockReturnValue(false);
@@ -33,8 +35,9 @@ describe('scripts/setupHooks', () => {
     const execSync = jest.spyOn(childProcess, 'execSync');
 
     beforeEach(() => {
-        prepareCommitMsgHookContents = `\nnpx @joberstein12/commit-history-validator hooks run prepare-commit-msg $@`;
-        commitMsgHookContents = `\nnpx @joberstein12/commit-history-validator hooks run commit-msg $@`;
+        version = '1.2.1';
+        prepareCommitMsgHookContents = `\nnpx ${name}@${version} hooks run prepare-commit-msg $@`;
+        commitMsgHookContents = `\nnpx ${name}@${version} hooks run commit-msg $@`;
     });
 
     it('Sets the hooks path for this project', () => {
@@ -52,11 +55,11 @@ describe('scripts/setupHooks', () => {
 
            readFileSync.mockImplementation(filepath => {
                if (filepath.endsWith('commit-history-validator/package.json')) {
-                   return JSON.stringify({ name: '@joberstein12/commit-history-validator' });
+                   return JSON.stringify({ name, version });
                } else if (filepath.endsWith('other/package.json')) {
-                   return JSON.stringify({name: 'other'});
+                   return JSON.stringify({ name: 'other' });
                } else if (filepath.endsWith('dist/hooks.txt')) {
-                   return ['commit-msg', 'prepare-commit-msg'].join(' ');
+                   return [ 'commit-msg', 'prepare-commit-msg' ].join(' ');
                } else if (filepath.endsWith('.git/hooks/prepare-commit-msg')) {
                    return prepareCommitMsgHookContents;
                } else if (filepath.endsWith('.git/hooks/commit-msg')) {
@@ -74,10 +77,9 @@ describe('scripts/setupHooks', () => {
 
             ['commit-msg', 'prepare-commit-msg'].forEach(hook => {
                 const hookPath = `other/.git/hooks/${hook}`;
-                const hookContents = `npx @joberstein12/commit-history-validator hooks run ${hook} $@`;
+                const hookContents = `npx ${name}@${version} hooks run ${hook} $@`;
 
-                expect(execSync).toHaveBeenCalledWith(`chmod +x ${hookPath}`);
-                expect(writeFileSync).toHaveBeenCalledWith(hookPath, hookContents);
+                expect(writeFileSync).toHaveBeenCalledWith(hookPath, hookContents, { mode: 0o755 });
             });
         });
 
@@ -98,19 +100,26 @@ describe('scripts/setupHooks', () => {
 
                 ['commit-msg', 'prepare-commit-msg'].forEach(hook => {
                     const hookPath = `other/.git/hooks/${hook}`;
-                    const hookContents = `\nnpx @joberstein12/commit-history-validator hooks run ${hook} $@`;
+                    const hookContents = `\nnpx ${name}@${version} hooks run ${hook} $@`;
 
                     expect(appendFileSync).toHaveBeenCalledWith(hookPath, hookContents);
                 });
             });
 
-            it('Does not append to hooks that have already been modified', () => {
+            it('Updates hooks that have already been modified', () => {
+                version = '1.2.2';
+
                 run();
 
                 expect(getHooksPath).toHaveBeenCalled();
                 expect(setHooksPath).not.toHaveBeenCalled();
-                expect(writeFileSync).not.toHaveBeenCalled();
                 expect(appendFileSync).not.toHaveBeenCalled();
+
+                [commitMsgHookContents, prepareCommitMsgHookContents].forEach(contents =>
+                    expect(writeFileSync).toHaveBeenCalledWith(
+                        expect.anything(),
+                        contents.replace('1.2.1', version)
+                    ));
             });
         });
     });

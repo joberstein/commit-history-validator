@@ -1324,6 +1324,11 @@
     "@types/yargs" "^17.0.8"
     chalk "^4.0.0"
 
+"@joberstein12/commitlint-config@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@joberstein12/commitlint-config/-/commitlint-config-1.0.1.tgz#8b7bf59814f7e290c1fc8a94c4be32b84371cbd4"
+  integrity sha512-/H6eVqDfq2kPUEyPlRFCYhnS9bar8Q0cNwXc/YiZTMnkqWAKmKRDzccq76tFGPZ7/soRvEFPIhtfLrSBUs4+ZQ==
+
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.1.1.tgz#e5d2e450306a9491e3bd77e323e38d7aff315996"

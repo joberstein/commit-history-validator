@@ -8,6 +8,6 @@ export const isDeployRequired = async () => {
     return hasChanges({
         branch: "master",
         relative: 'commit-history-validator',
-        files: ["src", "package.json"]
+        files: ["src", "package.json", ".npmignore"]
     });
 };

@@ -4,6 +4,7 @@ import setupHooks from "./setupHooks";
 import validateCommits from "./validateCommits";
 import validateRelease from "./validateRelease";
 import {getWorkingProjectDirectory} from "../utils/path";
+import {execSync} from "child_process";
 
 const usage = () => [
     "Usage:",
@@ -79,6 +80,10 @@ export const run = async () => {
                     throw new Error(`Subcommand does not exist for main command 'validate'.\n${usage()}`);
                 }
             }
+            break;
+        }
+        case "release": {
+            execSync(`semantic-release ${mainCommand.options.join(' ')}`, { stdio: 'inherit'});
             break;
         }
         default: {

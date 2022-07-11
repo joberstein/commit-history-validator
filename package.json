@@ -8,7 +8,7 @@
     "build": "yarn workspaces run build",
     "hooks:setup": "commit-history-validator hooks setup",
     "hooks:run": "commit-history-validator hooks run",
-    "release": "yarn workspaces run semantic-release",
+    "release": "yarn workspaces run commit-history-validator release",
     "test": "yarn workspaces run jest --passWithNoTests",
     "validate:commits": "commit-history-validator validate commits",
     "validate:release": "yarn workspaces run validate:release"

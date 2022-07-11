@@ -1,0 +1,6 @@
+.npmignore
+.releaserc.json
+README.md
+LICENSE
+validate-release.config.js
+*.log

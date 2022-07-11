@@ -54,7 +54,9 @@ describe('scripts/setupHooks', () => {
                if (filepath.endsWith('commit-history-validator/package.json')) {
                    return JSON.stringify({ name: '@joberstein12/commit-history-validator' });
                } else if (filepath.endsWith('other/package.json')) {
-                   return JSON.stringify({ name: 'other' });
+                   return JSON.stringify({name: 'other'});
+               } else if (filepath.endsWith('dist/hooks.txt')) {
+                   return ['commit-msg', 'prepare-commit-msg'].join(' ');
                } else if (filepath.endsWith('.git/hooks/prepare-commit-msg')) {
                    return prepareCommitMsgHookContents;
                } else if (filepath.endsWith('.git/hooks/commit-msg')) {

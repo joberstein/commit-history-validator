@@ -11,8 +11,13 @@
     "access": "public"
   },
   "scripts": {
-    "build": "yarn clean && chmod +x src/index.js && babel src --out-dir dist",
+    "build": "yarn transpile",
     "clean": "rm -rf dist",
+    "copy-hooks-list": "echo $(ls ../hooks) > dist/hooks.txt",
+    "enable-execution": "chmod +x src/index.js",
+    "postbuild": "yarn copy-hooks-list",
+    "prebuild": "yarn clean && yarn enable-execution",
+    "transpile": "babel src --out-dir dist",
     "validate:release": "node ./dist/index.js validate release -c ./dist/config"
   },
   "keywords": [

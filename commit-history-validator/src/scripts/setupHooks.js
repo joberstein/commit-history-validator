@@ -4,14 +4,16 @@ import {getHooksPath, setHooksPath} from "../utils/git.js";
 import {execSync} from "child_process";
 import {resolve} from "path";
 
+const encoding = 'utf-8';
+
 export default () => {
     const executingDir = `${getExecutingProjectDirectory()}`;
 
-    const executingProjectData = readFileSync(`${executingDir}/package.json`, 'utf-8');
+    const executingProjectData = readFileSync(`${executingDir}/package.json`, { encoding });
     const {name: executingAppName} = JSON.parse(executingProjectData);
-    const hookImplementationPath = resolve(`${executingDir}/../hooks`);
 
     if (getWorkspaceNames().includes(executingAppName)) {
+        const hookImplementationPath = resolve(`${executingDir}/../hooks`);
         setHooksPath(hookImplementationPath);
         console.info(`Set local hooks path to: ${hookImplementationPath}`);
         execSync(`chmod -R +x ${hookImplementationPath}`);
@@ -24,8 +26,11 @@ export default () => {
         console.warn(`Hooks path already exists at: '${existingHooksPath}'`);
     }
 
-    const hooksPath = existingHooksPath || `${getWorkingProjectDirectory()}/.git/hooks`;
-    const hooks = readdirSync(hookImplementationPath);
+    const workingDir = getWorkingProjectDirectory();
+    const hooksPath = existingHooksPath || `${workingDir}/.git/hooks`;
+    const hooksData = readFileSync(`${executingDir}/dist/hooks.txt`, { encoding });
+    const hooks = hooksData.trim().split(' ');
+
     console.info(`Found the following hooks to install: [${hooks.join(', ')}]\n`);
 
     hooks.forEach(hook => {
@@ -43,7 +48,7 @@ export default () => {
         }
 
         console.warn(`Hook already exists at file: '${outputFile}'`);
-        const existingHook = readFileSync(outputFile, 'utf-8');
+        const existingHook = readFileSync(outputFile, { encoding });
         const commandMatcher = new RegExp(contents.replace("$", "\\$"));
 
         if (commandMatcher.test(existingHook)) {
